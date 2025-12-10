@@ -6,26 +6,26 @@ import type { ThemeConfig } from '~/types'
 export const defaultConfig: ThemeConfig = {
   site: {
     title: '澄明之境',
-    subtitle: 'RazeKairos',
+    subtitle: 'asdf',
     author: 'Kairos',
-    description: 'Rediscory the beauty of typography',
-    website: 'https://astro-theme-typography.vercel.app/',
+    description: 'May the force be with you.',
+    website: 'https://qq.welights.net/',
     pageSize: 5,
     socialLinks: [
       {
         name: 'github',
         href: 'https://github.com/logerror/',
       },
-      {
-        name: 'rss',
-        href: '/atom.xml',
-      },
+      // {
+      //   name: 'rss',
+      //   href: '/atom.xml',
+      // },
       {
         name: 'twitter',
         href: 'https://x.com/RazeKairos',
       },
       {
-        name: 'mastodon',
+        name: 'telegram',
         href: 'https://x.com/RazeKairos',
       },
     ],
@@ -72,7 +72,7 @@ export const defaultConfig: ThemeConfig = {
     },
   },
   seo: {
-    twitter: '@moeyua13',
+    twitter: '@RazeKairos',
     meta: [],
     link: [],
   },
