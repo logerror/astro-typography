@@ -1,0 +1,138 @@
+---
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import SiteSeo from '~/components/SiteSeo.astro'
+import { formatDate, getInvestmentAnalyses, getInvestmentAnalysisUrl } from '~/utils'
+
+const analyses = await getInvestmentAnalyses()
+const stanceText = { positive: '积极', neutral: '中性', cautious: '谨慎' } as const
+const typeText = { daily: '每日观察', topic: '专题研究', review: '观点复盘' } as const
+const statusText = { tracking: '跟踪中', validated: '已验证', invalidated: '已失效' } as const
+---
+
+<LayoutDefault>
+  <SiteSeo
+    slot="seo"
+    title="投资分析 · 澄明之境"
+    desc="围绕 AI Infra、科技产业与市场变化的持续观察、分析和展望。"
+    rssHref="/investing/atom.xml"
+  />
+
+  <header class="investing-header">
+    <p>INVESTMENT NOTES</p>
+    <h1>投资分析</h1>
+    <div>围绕 AI Infra、科技产业与市场变化，记录事实、假设、判断与验证。保持更新，也保留判断失效的条件。</div>
+  </header>
+
+  <aside class="disclaimer">本栏目仅记录个人研究与思考，不构成任何投资建议。市场有风险，决策应基于独立判断。</aside>
+
+  <nav class="investing-nav" aria-label="投资分析辅助导航">
+    <a href="/investing/archive">按月归档</a>
+    <a href="/investing/atom.xml">RSS 订阅</a>
+  </nav>
+
+  <section class="analysis-list" aria-label="投资分析文章">
+    {
+      analyses.map((analysis) => (
+        <article>
+          <div class="analysis-meta">
+            <time datetime={analysis.data.pubDate.toISOString()}>{formatDate(analysis.data.pubDate)}</time>
+            <span>{typeText[analysis.data.type]}</span>
+            <span>{statusText[analysis.data.status]}</span>
+            {analysis.data.stance && <span>{stanceText[analysis.data.stance]}</span>}
+            {analysis.data.horizon && <span>{analysis.data.horizon}</span>}
+          </div>
+          <h2>
+            <a href={getInvestmentAnalysisUrl(analysis)}>{analysis.data.title}</a>
+          </h2>
+          <p>{analysis.data.summary}</p>
+          <p class="analysis-thesis">
+            <strong>核心判断：</strong>
+            {analysis.data.thesis}
+          </p>
+          {analysis.data.markets.length > 0 && (
+            <ul aria-label="涉及市场">
+              {analysis.data.markets.map((market) => (
+                <li>#{market}</li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))
+    }
+  </section>
+</LayoutDefault>
+
+<style>
+  .investing-header {
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 1.5rem;
+  }
+
+  .investing-header p {
+    margin: 0 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .investing-header h1 {
+    margin: 0 0 1rem;
+    font-size: 2.25rem;
+    letter-spacing: 0;
+  }
+
+  .investing-header div {
+    max-width: 44rem;
+    line-height: 1.8;
+  }
+
+  .disclaimer {
+    margin-block: 1.5rem;
+    border-left: 3px solid currentColor;
+    padding: 0.5rem 0 0.5rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    opacity: 0.75;
+  }
+
+  .investing-nav {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+
+  .analysis-list article {
+    border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    padding-block: 1.5rem;
+  }
+
+  .analysis-meta,
+  .analysis-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .analysis-list h2 {
+    margin: 0.65rem 0;
+    font-size: 1.35rem;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .analysis-list p {
+    margin: 0 0 0.9rem;
+    line-height: 1.75;
+  }
+
+  .analysis-list .analysis-thesis {
+    font-size: 0.9rem;
+    opacity: 0.82;
+  }
+</style>

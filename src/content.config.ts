@@ -27,7 +27,30 @@ const spec = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/spec' }),
 })
 
+const investing = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/investing' }),
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.coerce.date(),
+    modDate: z.coerce.date().optional(),
+    summary: z.string(),
+    thesis: z.string(),
+    type: z.enum(['daily', 'topic', 'review']).default('daily'),
+    status: z.enum(['tracking', 'validated', 'invalidated']).default('tracking'),
+    confidence: z.enum(['low', 'medium', 'high']).optional(),
+    markets: z.array(z.string()).default([]),
+    symbols: z.array(z.string()).default([]),
+    horizon: z.string().optional(),
+    stance: z.enum(['positive', 'neutral', 'cautious']).optional(),
+    invalidations: z.array(z.string()).default([]),
+    sources: z.array(z.object({ title: z.string(), url: z.string().url() })).default([]),
+    updateNote: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+})
+
 export const collections = {
+  investing,
   posts,
   spec,
 }

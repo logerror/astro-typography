@@ -6,6 +6,7 @@ export const LANGUAGES = {
     Archive: '归档',
     Tags: '标签',
     About: '关于',
+    Investing: '投资分析',
     Links: '链接',
 
     posted_at: '发布于',
@@ -30,6 +31,7 @@ export const LANGUAGES = {
     Archive: 'Archive',
     Tags: 'Tags',
     About: 'About',
+    Investing: 'Investing',
     Links: 'Links',
 
     posted_at: 'Posted at',
@@ -54,6 +56,7 @@ export const LANGUAGES = {
     Archive: '歸檔',
     Tags: '標籤',
     About: '關於',
+    Investing: '投資分析',
     Links: '鏈接',
 
     posted_at: '發佈於',
@@ -78,6 +81,7 @@ export const LANGUAGES = {
     Archive: 'アーカイブ',
     Tags: 'タグ',
     About: '私について',
+    Investing: '投資分析',
     Links: 'リンク',
 
     posted_at: '投稿日',
@@ -102,6 +106,7 @@ export const LANGUAGES = {
     Archive: 'Archivio',
     Tags: 'Tag',
     About: 'Info',
+    Investing: 'Investimenti',
     Links: 'Link',
 
     posted_at: 'Pubblicato in',

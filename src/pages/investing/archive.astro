@@ -1,0 +1,138 @@
+---
+import type { InvestmentAnalysis } from '~/types'
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import SiteSeo from '~/components/SiteSeo.astro'
+import { formatDate, getInvestmentAnalyses, getInvestmentAnalysisUrl } from '~/utils'
+
+const analyses = await getInvestmentAnalyses()
+const typeText = { daily: '每日观察', topic: '专题研究', review: '观点复盘' } as const
+const statusText = { tracking: '跟踪中', validated: '已验证', invalidated: '已失效' } as const
+const monthGroups = getMonthGroups(analyses)
+
+function getMonthGroups(entries: InvestmentAnalysis[]) {
+  const groups = new Map<string, InvestmentAnalysis[]>()
+
+  for (const entry of entries) {
+    const key = formatDate(entry.data.pubDate, 'YYYY-MM')
+    groups.set(key, [...(groups.get(key) ?? []), entry])
+  }
+
+  return Array.from(groups.entries())
+}
+---
+
+<LayoutDefault>
+  <SiteSeo
+    slot="seo"
+    title="投资分析归档 · 澄明之境"
+    desc="按月份回顾 Kairos 的 AI Infra、科技产业与市场投资分析。"
+    rssHref="/investing/atom.xml"
+  />
+
+  <header class="archive-header">
+    <a href="/investing">投资分析</a>
+    <h1>投资分析归档</h1>
+    <p>按发布时间回顾观点，并持续检查判断的验证与失效状态。</p>
+  </header>
+
+  <div class="archive-groups">
+    {
+      monthGroups.map(([, entries]) => (
+        <section>
+          <h2>{formatDate(entries[0].data.pubDate, 'YYYY 年 MM 月')}</h2>
+          <ol>
+            {entries.map((entry) => (
+              <li>
+                <time datetime={entry.data.pubDate.toISOString()}>{formatDate(entry.data.pubDate, 'MM-DD')}</time>
+                <div>
+                  <h3>
+                    <a href={getInvestmentAnalysisUrl(entry)}>{entry.data.title}</a>
+                  </h3>
+                  <p>
+                    {typeText[entry.data.type]} · {statusText[entry.data.status]}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    }
+  </div>
+</LayoutDefault>
+
+<style>
+  .archive-header {
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 1.5rem;
+  }
+
+  .archive-header > a {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .archive-header h1 {
+    margin: 0.75rem 0;
+    font-size: 2.25rem;
+    letter-spacing: 0;
+  }
+
+  .archive-header p {
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .archive-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .archive-groups h2 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    letter-spacing: 0;
+  }
+
+  .archive-groups ol {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .archive-groups li {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .archive-groups time,
+  .archive-groups p {
+    font-size: 0.8rem;
+    opacity: 0.72;
+  }
+
+  .archive-groups h3,
+  .archive-groups p {
+    margin: 0;
+    letter-spacing: 0;
+  }
+
+  .archive-groups h3 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 520px) {
+    .archive-groups li {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

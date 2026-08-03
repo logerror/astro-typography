@@ -1,4 +1,4 @@
-import type { Link, Meta } from 'astro-seo'
+import type { SEOProps } from 'astro-seo'
 import type {
   AvailableLanguage,
   BooleanString,
@@ -49,8 +49,8 @@ export interface ConfigAppearance {
 
 export interface ConfigSEO {
   twitter: string
-  meta: Partial<Meta>[]
-  link: Partial<Link>[]
+  meta: NonNullable<NonNullable<SEOProps['extend']>['meta']>
+  link: NonNullable<NonNullable<SEOProps['extend']>['link']>
 }
 
 export interface ConfigComment {

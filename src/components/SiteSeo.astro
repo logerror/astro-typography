@@ -7,6 +7,8 @@ interface Props {
   title?: string
   desc?: string
   banner?: ImageMetadata
+  type?: 'article' | 'website'
+  rssHref?: string
 }
 
 const props = Astro.props
@@ -16,9 +18,9 @@ const configSite = themeConfig.site
 
 const title = props.title ?? configSite.title
 const desc = props.desc ?? configSite.description
-const canonical = configSite.website
+const canonical = new URL(Astro.url.pathname, configSite.website).toString()
 const twitter = configSEO.twitter
-const rss = new URL('/atom.xml', Astro.site).toString()
+const rss = new URL(props.rssHref ?? '/atom.xml', configSite.website).toString()
 const optimizedImage = await getOptimizedImageURL()
 
 const seoLinks = [
@@ -48,7 +50,7 @@ const seoMeta = [
 const openGraph: SEOProps['openGraph'] = {
   basic: {
     title: title,
-    type: 'article',
+    type: props.type ?? 'website',
     image: optimizedImage,
     url: canonical,
   },
@@ -56,7 +58,7 @@ const openGraph: SEOProps['openGraph'] = {
 
 async function getOptimizedImageURL() {
   const image = props.banner && (await getImage({ src: props.banner, format: 'jpeg' }))
-  return new URL(image?.src ?? '/placeholder.png', Astro.url).toString()
+  return new URL(image?.src ?? '/typograph-og.jpg', configSite.website).toString()
 }
 ---
 
@@ -64,6 +66,7 @@ async function getOptimizedImageURL() {
   charset="utf-8"
   title={title}
   description={desc}
+  canonical={canonical}
   extend={{ link: seoLinks, meta: seoMeta }}
   openGraph={openGraph}
 />

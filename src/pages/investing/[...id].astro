@@ -1,0 +1,226 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { render } from 'astro:content'
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import SiteSeo from '~/components/SiteSeo.astro'
+import { formatDate, getInvestmentAnalyses } from '~/utils'
+
+export const getStaticPaths = (async () => {
+  const analyses = await getInvestmentAnalyses()
+  return analyses.map((analysis) => ({
+    params: { id: analysis.id },
+    props: { analysis },
+  }))
+}) satisfies GetStaticPaths
+
+const { analysis } = Astro.props
+const { Content } = await render(analysis)
+const stanceText = { positive: '积极', neutral: '中性', cautious: '谨慎' } as const
+const typeText = { daily: '每日观察', topic: '专题研究', review: '观点复盘' } as const
+const statusText = { tracking: '跟踪中', validated: '已验证', invalidated: '已失效' } as const
+const confidenceText = { low: '低', medium: '中', high: '高' } as const
+const displayDate = analysis.data.modDate ?? analysis.data.pubDate
+---
+
+<LayoutDefault>
+  <SiteSeo
+    slot="seo"
+    title={analysis.data.title}
+    desc={analysis.data.summary}
+    type="article"
+    rssHref="/investing/atom.xml"
+  />
+
+  <article class="investment-article">
+    <header>
+      <a class="section-link" href="/investing">投资分析</a>
+      <h1>{analysis.data.title}</h1>
+      <div class="meta">
+        <time datetime={displayDate.toISOString()}>
+          {analysis.data.modDate ? '更新于' : '发布于'}
+          {formatDate(displayDate)}
+        </time>
+        <span>{typeText[analysis.data.type]}</span>
+        <span>{statusText[analysis.data.status]}</span>
+        {analysis.data.stance && <span>观点：{stanceText[analysis.data.stance]}</span>}
+        {analysis.data.horizon && <span>周期：{analysis.data.horizon}</span>}
+      </div>
+      {
+        analysis.data.markets.length > 0 && (
+          <ul aria-label="涉及市场">
+            {analysis.data.markets.map((market) => (
+              <li>#{market}</li>
+            ))}
+          </ul>
+        )
+      }
+      {
+        analysis.data.symbols.length > 0 && (
+          <ul aria-label="涉及标的">
+            {analysis.data.symbols.map((symbol) => (
+              <li>${symbol}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <p class="summary">{analysis.data.summary}</p>
+
+    <section class="traceability" aria-labelledby="traceability-title">
+      <h2 id="traceability-title">判断基线</h2>
+      <dl>
+        <div>
+          <dt>核心判断</dt>
+          <dd>{analysis.data.thesis}</dd>
+        </div>
+        <div>
+          <dt>跟踪状态</dt>
+          <dd>{statusText[analysis.data.status]}</dd>
+        </div>
+        {
+          analysis.data.confidence && (
+            <div>
+              <dt>置信度</dt>
+              <dd>{confidenceText[analysis.data.confidence]}</dd>
+            </div>
+          )
+        }
+        {
+          analysis.data.invalidations.length > 0 && (
+            <div>
+              <dt>证伪条件</dt>
+              <dd>{analysis.data.invalidations.join('；')}</dd>
+            </div>
+          )
+        }
+        {
+          analysis.data.updateNote && (
+            <div>
+              <dt>更新说明</dt>
+              <dd>{analysis.data.updateNote}</dd>
+            </div>
+          )
+        }
+      </dl>
+    </section>
+
+    <div class="prose"><Content /></div>
+
+    {
+      analysis.data.sources.length > 0 && (
+        <section class="sources" aria-labelledby="sources-title">
+          <h2 id="sources-title">信息来源</h2>
+          <ol>
+            {analysis.data.sources.map((source) => (
+              <li>
+                <a href={source.url} target="_blank" rel="noreferrer">
+                  {source.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    <footer>本文仅为个人研究记录，不构成投资建议。</footer>
+  </article>
+</LayoutDefault>
+
+<style>
+  .investment-article > header {
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 1.5rem;
+  }
+
+  .section-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  h1 {
+    margin: 0.85rem 0;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .meta,
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+  }
+
+  ul {
+    margin-top: 0.75rem;
+    font-weight: 700;
+  }
+
+  .summary {
+    border-left: 3px solid currentColor;
+    margin: 2rem 0;
+    padding-left: 1rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.75;
+  }
+
+  .traceability {
+    border-block: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    margin-bottom: 2rem;
+    padding-block: 1rem;
+  }
+
+  .traceability h2,
+  .sources h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    letter-spacing: 0;
+  }
+
+  .traceability dl {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .traceability dl > div {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .traceability dt {
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .traceability dd {
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .sources {
+    margin-top: 2.5rem;
+  }
+
+  .sources ol {
+    margin: 0;
+    padding-left: 1.25rem;
+    line-height: 1.8;
+  }
+
+  footer {
+    border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    margin-top: 3rem;
+    padding-top: 1rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+</style>

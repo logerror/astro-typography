@@ -1,9 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content'
+import SiteSeo from '~/components/SiteSeo.astro'
 import LayoutDefault from '~/layouts/LayoutDefault.astro'
-import { formatDate } from '~/utils'
 
-const { translate: t } = Astro.locals
 const aboutPost = await getEntry('spec', 'about')
 if (!aboutPost) {
   throw new Error('No about post found')
@@ -12,14 +11,16 @@ const { Content } = await render(aboutPost)
 ---
 
 <LayoutDefault>
+  <SiteSeo
+    slot="seo"
+    title="关于 Kairos · 澄明之境"
+    desc="Kairos 的个人经历与关注方向：Infra、研发效能、智能驾驶、AI Infra 与投资研究。"
+  />
+
   <header flex="~ col gap-2">
     <h1 class="post-title">
       <a class="not-prose">{aboutPost.data.title}</a>
     </h1>
-    <div class="text-3.5">
-      <span>{t('posted_at')}</span>
-      <time>{formatDate(aboutPost.data.pubDate)}</time>
-    </div>
   </header>
   <article class="prose">
     <Content />

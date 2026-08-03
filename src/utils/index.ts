@@ -1,4 +1,4 @@
-import type { Post } from '~/types'
+import type { InvestmentAnalysis, Post } from '~/types'
 import { getCollection } from 'astro:content'
 import dayjs from 'dayjs'
 import MarkdownIt from 'markdown-it'
@@ -40,6 +40,22 @@ export async function getPosts(isArchivePage = false) {
   }
 
   return posts
+}
+
+export async function getInvestmentAnalyses() {
+  const analyses = await getCollection('investing')
+
+  analyses.sort((a, b) => dayjs(a.data.pubDate).isBefore(dayjs(b.data.pubDate)) ? 1 : -1)
+
+  if (import.meta.env.PROD) {
+    return analyses.filter(analysis => analysis.data.draft !== true)
+  }
+
+  return analyses
+}
+
+export function getInvestmentAnalysisUrl(analysis: InvestmentAnalysis) {
+  return `/investing/${analysis.id}/`
 }
 
 const parser = new MarkdownIt()
