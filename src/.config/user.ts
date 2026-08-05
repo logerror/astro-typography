@@ -17,6 +17,7 @@ export const userConfig: Partial<UserConfig> = {
     navLinks: [
       { name: 'Posts', href: '/' },
       { name: 'Investing', href: '/investing' },
+      { name: 'Games', href: '/games/shengbei' },
       { name: 'Archive', href: '/archive' },
       { name: 'Categories', href: '/categories' },
       { name: 'About', href: '/about' },

@@ -1,0 +1,863 @@
+---
+import LayoutDefault from '~/layouts/LayoutDefault.astro'
+import SiteSeo from '~/components/SiteSeo.astro'
+---
+
+<LayoutDefault>
+  <SiteSeo
+    slot="seo"
+    title="掷圣杯 · 潮汕民俗互动体验"
+    desc="模拟潮汕民间掷筊习俗，认识圣杯、笑杯与阴杯三种常见杯相。"
+  />
+
+  <shengbei-game>
+    <header class="game-header">
+      <p>潮汕民俗互动体验</p>
+      <h1>掷圣杯</h1>
+      <div>心中默念一件想请示的事，一次一事，心诚意静。</div>
+    </header>
+
+    <section class="question-area" aria-labelledby="question-label">
+      <div class="question-heading">
+        <span id="question-label">所问之事</span>
+        <small>一次一事</small>
+      </div>
+      <div class="question-entry">
+        <div class="question-presets" role="group" aria-label="常用问题">
+          <button type="button" data-question="当前计划是否适合继续？" aria-pressed="false"
+            >当前计划是否适合继续？</button
+          >
+          <button type="button" data-question="近期是否适合开始这件事？" aria-pressed="false"
+            >近期是否适合开始这件事？</button
+          >
+          <button type="button" data-question="此次出行是否顺利？" aria-pressed="false">此次出行是否顺利？</button>
+          <button type="button" data-question="此事是否应当暂缓？" aria-pressed="false">此事是否应当暂缓？</button>
+          <button class="custom-question" type="button" data-custom-question aria-pressed="false">自己写一个…</button>
+        </div>
+        <label class="sr-only" for="question">输入所问之事</label>
+        <input id="question" type="text" maxlength="80" autocomplete="off" placeholder="选择上方问题，或在这里输入" />
+      </div>
+    </section>
+
+    <section class="casting-ground" aria-live="polite" aria-labelledby="result-title">
+      <div class="ground-mark" aria-hidden="true"><span>诚</span><span>敬</span></div>
+
+      <div class="cups" aria-label="杯筊结果">
+        <div class="cup-wrap cup-left" data-cup="left" data-face="rest">
+          <span class="landing-shadow" aria-hidden="true"></span>
+          <svg class="cup" viewBox="0 0 180 120" aria-hidden="true">
+            <g class="face face-rest">
+              <path class="wood-edge" d="M18 72Q90 26 162 72L153 89Q90 115 27 89Z"></path>
+              <path class="wood-red" d="M18 72Q90 26 162 72Q90 100 18 72Z"></path>
+              <path class="wood-mark" d="M35 72Q90 43 145 72"></path>
+            </g>
+            <g class="face face-flat">
+              <path class="wood-edge" d="M19 73Q90 105 161 73L153 88Q90 119 27 88Z"></path>
+              <path class="wood-flat" d="M19 72Q90 19 161 72Q90 105 19 72Z"></path>
+              <path class="wood-grain" d="M38 72Q90 38 142 72M52 75Q90 52 128 75"></path>
+              <text class="face-symbol" x="90" y="78">阳</text>
+            </g>
+            <g class="face face-convex">
+              <path class="wood-edge" d="M18 79Q90 110 162 79L153 94Q90 122 27 94Z"></path>
+              <path class="wood-convex" d="M18 79Q90 4 162 79Q90 110 18 79Z"></path>
+              <path class="wood-highlight" d="M44 71Q90 27 136 71"></path>
+              <text class="face-symbol" x="90" y="82">阴</text>
+            </g>
+          </svg>
+          <span class="face-label">待掷</span>
+        </div>
+
+        <div class="cup-wrap cup-right" data-cup="right" data-face="rest">
+          <span class="landing-shadow" aria-hidden="true"></span>
+          <svg class="cup" viewBox="0 0 180 120" aria-hidden="true">
+            <g class="face face-rest">
+              <path class="wood-edge" d="M18 72Q90 26 162 72L153 89Q90 115 27 89Z"></path>
+              <path class="wood-red" d="M18 72Q90 26 162 72Q90 100 18 72Z"></path>
+              <path class="wood-mark" d="M35 72Q90 43 145 72"></path>
+            </g>
+            <g class="face face-flat">
+              <path class="wood-edge" d="M19 73Q90 105 161 73L153 88Q90 119 27 88Z"></path>
+              <path class="wood-flat" d="M19 72Q90 19 161 72Q90 105 19 72Z"></path>
+              <path class="wood-grain" d="M38 72Q90 38 142 72M52 75Q90 52 128 75"></path>
+              <text class="face-symbol" x="90" y="78">阳</text>
+            </g>
+            <g class="face face-convex">
+              <path class="wood-edge" d="M18 79Q90 110 162 79L153 94Q90 122 27 94Z"></path>
+              <path class="wood-convex" d="M18 79Q90 4 162 79Q90 110 18 79Z"></path>
+              <path class="wood-highlight" d="M44 71Q90 27 136 71"></path>
+              <text class="face-symbol" x="90" y="82">阴</text>
+            </g>
+          </svg>
+          <span class="face-label">待掷</span>
+        </div>
+      </div>
+
+      <div class="result" data-result="waiting">
+        <p class="result-kicker">静候杯示</p>
+        <h2 id="result-title">准备好了</h2>
+        <p class="result-copy">双杯落定，自有一答。</p>
+      </div>
+
+      <button class="cast-button" type="button">掷杯</button>
+    </section>
+
+    <section class="session" aria-labelledby="session-title">
+      <div class="session-heading">
+        <div>
+          <p>本轮记录</p>
+          <h2 id="session-title">杯相</h2>
+        </div>
+        <button class="reset-button" type="button">清空</button>
+      </div>
+
+      <p class="stats" aria-live="polite">圣杯 0 · 笑杯 0 · 阴杯 0</p>
+      <ol class="history">
+        <li class="empty-history">尚无记录</li>
+      </ol>
+    </section>
+
+    <section class="meaning" aria-labelledby="meaning-title">
+      <h2 id="meaning-title">三种杯相</h2>
+      <dl>
+        <div>
+          <dt>圣杯</dt>
+          <dd>一平一凸，一阴一阳。表示允可、可行。</dd>
+        </div>
+        <div>
+          <dt>笑杯</dt>
+          <dd>两面皆平。表示所问不清，或时机未定。</dd>
+        </div>
+        <div>
+          <dt>阴杯</dt>
+          <dd>两面皆凸。表示不允，宜止而再思。</dd>
+        </div>
+      </dl>
+    </section>
+
+    <p class="cultural-note">本页仅作潮汕民俗文化体验，数字杯相不应作为现实决策依据。</p>
+  </shengbei-game>
+</LayoutDefault>
+
+<script>
+  type Face = 'flat' | 'convex'
+  type ResultKey = 'sheng' | 'xiao' | 'yin'
+
+  interface ResultDefinition {
+    title: string
+    kicker: string
+    copy: string
+  }
+
+  const results: Record<ResultKey, ResultDefinition> = {
+    sheng: {
+      title: '圣杯',
+      kicker: '一阴一阳',
+      copy: '所问之事，允可而行。',
+    },
+    xiao: {
+      title: '笑杯',
+      kicker: '两面皆平',
+      copy: '所问未明，或时机未定。',
+    },
+    yin: {
+      title: '阴杯',
+      kicker: '两面皆凸',
+      copy: '此事不允，宜止而再思。',
+    },
+  }
+
+  class ShengbeiGame extends HTMLElement {
+    private counts: Record<ResultKey, number> = { sheng: 0, xiao: 0, yin: 0 }
+    private casting = false
+
+    connectedCallback() {
+      if (this.dataset.ready) {
+        return
+      }
+
+      this.dataset.ready = 'true'
+      this.querySelector<HTMLButtonElement>('.cast-button')?.addEventListener('click', () => this.cast())
+      this.querySelector<HTMLButtonElement>('.reset-button')?.addEventListener('click', () => this.reset())
+
+      const question = this.querySelector<HTMLInputElement>('#question')
+      const questionButtons = Array.from(this.querySelectorAll<HTMLButtonElement>('.question-presets button'))
+      questionButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          questionButtons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)))
+
+          if (!question) {
+            return
+          }
+
+          if (button.dataset.customQuestion !== undefined) {
+            question.value = ''
+            question.focus()
+            return
+          }
+
+          question.value = button.dataset.question ?? ''
+        })
+      })
+
+      question?.addEventListener('input', () => {
+        questionButtons.forEach((button) => button.setAttribute('aria-pressed', 'false'))
+      })
+    }
+
+    private cast() {
+      if (this.casting) {
+        return
+      }
+
+      const button = this.querySelector<HTMLButtonElement>('.cast-button')
+      const cups = Array.from(this.querySelectorAll<HTMLElement>('.cup-wrap'))
+      const result = this.querySelector<HTMLElement>('.result')
+      if (!button || cups.length !== 2 || !result) {
+        return
+      }
+
+      this.casting = true
+      button.disabled = true
+      button.textContent = '落杯中'
+      result.dataset.result = 'casting'
+      result.querySelector<HTMLElement>('.result-kicker')!.textContent = '杯筊落地'
+      result.querySelector<HTMLElement>('h2')!.textContent = '……'
+      result.querySelector<HTMLElement>('.result-copy')!.textContent = '静候杯示。'
+
+      const left = this.randomFace()
+      const right = this.randomFace()
+      const resultKey = this.getResult(left, right)
+      this.setCup(cups[0], left)
+      this.setCup(cups[1], right)
+      cups.forEach((cup) => cup.classList.add('is-casting'))
+
+      window.setTimeout(() => {
+        cups.forEach((cup) => cup.classList.remove('is-casting'))
+        this.showResult(result, resultKey)
+        this.record(resultKey)
+
+        button.disabled = false
+        button.textContent = '再掷一次'
+        this.casting = false
+      }, 1250)
+    }
+
+    private randomFace(): Face {
+      const value = new Uint32Array(1)
+      window.crypto.getRandomValues(value)
+      return value[0] % 2 === 0 ? 'flat' : 'convex'
+    }
+
+    private getResult(left: Face, right: Face): ResultKey {
+      if (left !== right) {
+        return 'sheng'
+      }
+      return left === 'flat' ? 'xiao' : 'yin'
+    }
+
+    private setCup(cup: HTMLElement, face: Face) {
+      cup.dataset.face = face
+      cup.querySelector<HTMLElement>('.face-label')!.textContent = face === 'flat' ? '阳 · 平面' : '阴 · 凸面'
+    }
+
+    private showResult(element: HTMLElement, key: ResultKey) {
+      const definition = results[key]
+      element.dataset.result = key
+      element.querySelector<HTMLElement>('.result-kicker')!.textContent = definition.kicker
+      element.querySelector<HTMLElement>('h2')!.textContent = definition.title
+      element.querySelector<HTMLElement>('.result-copy')!.textContent = definition.copy
+    }
+
+    private record(key: ResultKey) {
+      this.counts[key] += 1
+      const history = this.querySelector<HTMLOListElement>('.history')
+      const stats = this.querySelector<HTMLElement>('.stats')
+      if (!history || !stats) {
+        return
+      }
+
+      history.querySelector('.empty-history')?.remove()
+      const entry = document.createElement('li')
+      const index = Object.values(this.counts).reduce((sum, count) => sum + count, 0)
+      entry.dataset.result = key
+      entry.innerHTML = `<span>第 ${index} 次</span><strong>${results[key].title}</strong><small>${results[key].kicker}</small>`
+      history.prepend(entry)
+
+      while (history.children.length > 6) {
+        history.lastElementChild?.remove()
+      }
+
+      stats.textContent = `圣杯 ${this.counts.sheng} · 笑杯 ${this.counts.xiao} · 阴杯 ${this.counts.yin}`
+    }
+
+    private reset() {
+      this.counts = { sheng: 0, xiao: 0, yin: 0 }
+      this.querySelector<HTMLElement>('.stats')!.textContent = '圣杯 0 · 笑杯 0 · 阴杯 0'
+      this.querySelector<HTMLOListElement>('.history')!.innerHTML = '<li class="empty-history">尚无记录</li>'
+
+      this.querySelectorAll<HTMLElement>('.cup-wrap').forEach((cup) => {
+        cup.dataset.face = 'rest'
+        cup.querySelector<HTMLElement>('.face-label')!.textContent = '待掷'
+      })
+
+      const result = this.querySelector<HTMLElement>('.result')!
+      result.dataset.result = 'waiting'
+      result.querySelector<HTMLElement>('.result-kicker')!.textContent = '静候杯示'
+      result.querySelector<HTMLElement>('h2')!.textContent = '准备好了'
+      result.querySelector<HTMLElement>('.result-copy')!.textContent = '双杯落定，自有一答。'
+
+      const button = this.querySelector<HTMLButtonElement>('.cast-button')!
+      button.textContent = '掷杯'
+      this.querySelector<HTMLInputElement>('#question')!.value = ''
+      this.querySelectorAll<HTMLButtonElement>('.question-presets button').forEach((questionButton) => {
+        questionButton.setAttribute('aria-pressed', 'false')
+      })
+    }
+  }
+
+  if (!customElements.get('shengbei-game')) {
+    customElements.define('shengbei-game', ShengbeiGame)
+  }
+</script>
+
+<style>
+  shengbei-game {
+    display: block;
+    max-width: 50rem;
+    margin-inline: auto;
+  }
+
+  .game-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid currentColor;
+  }
+
+  .game-header > p,
+  .result-kicker,
+  .session-heading p {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .game-header h1 {
+    margin: 0.3rem 0 0.75rem;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .game-header div {
+    line-height: 1.75;
+  }
+
+  .question-area {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+    padding-block: 1.25rem;
+  }
+
+  .question-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding-top: 0.55rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .question-heading small {
+    font-size: 0.72rem;
+    font-weight: 400;
+    opacity: 0.58;
+  }
+
+  .question-entry {
+    min-width: 0;
+  }
+
+  .question-presets {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .question-presets button {
+    min-width: 0;
+    min-height: 2.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    border-radius: 0;
+    color: inherit;
+    background: transparent;
+    padding: 0.55rem 0.7rem;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .question-presets button:hover,
+  .question-presets button:focus-visible {
+    border-color: currentColor;
+  }
+
+  .question-presets button[aria-pressed='true'] {
+    border-color: var(--uno-colors-primary);
+    color: var(--uno-colors-background);
+    background: var(--uno-colors-primary);
+  }
+
+  .question-presets .custom-question {
+    grid-column: 1 / -1;
+    border-style: dashed;
+    text-align: center;
+  }
+
+  .question-entry input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    border-radius: 0;
+    color: inherit;
+    background: transparent;
+    padding: 0.65rem 0;
+    outline: none;
+  }
+
+  .question-entry input:focus {
+    border-bottom-width: 2px;
+  }
+
+  .question-entry input::placeholder {
+    color: color-mix(in srgb, currentColor 55%, transparent);
+  }
+
+  .casting-ground {
+    position: relative;
+    overflow: hidden;
+    min-height: 31rem;
+    border-block: 1px solid currentColor;
+    padding: 3.5rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .ground-mark {
+    position: absolute;
+    inset: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: color-mix(in srgb, currentColor 8%, transparent);
+    font-family: var(--uno-fonts-ui);
+    font-size: 9rem;
+    font-weight: 700;
+    pointer-events: none;
+  }
+
+  .cups {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 12rem));
+    justify-content: center;
+    gap: 1.5rem;
+    min-height: 10rem;
+  }
+
+  .cup-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    perspective: 42rem;
+  }
+
+  .cup {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 11rem;
+    overflow: visible;
+    filter: drop-shadow(0.25rem 0.35rem 0 color-mix(in srgb, currentColor 22%, transparent));
+    transform-origin: center;
+    transform-style: preserve-3d;
+  }
+
+  .landing-shadow {
+    position: absolute;
+    z-index: 0;
+    top: 6.8rem;
+    width: 7.5rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, currentColor 18%, transparent);
+    filter: blur(0.2rem);
+    transform-origin: center;
+  }
+
+  .face {
+    opacity: 0;
+  }
+
+  [data-face='rest'] .face-rest,
+  [data-face='flat'] .face-flat,
+  [data-face='convex'] .face-convex {
+    opacity: 1;
+  }
+
+  .wood-edge {
+    fill: #6e261d;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .wood-red,
+  .wood-convex {
+    fill: #a9392d;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .wood-flat {
+    fill: #e2a074;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .wood-mark,
+  .wood-grain,
+  .wood-highlight {
+    fill: none;
+    stroke: #ffe2c2;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .wood-grain {
+    stroke: #b75c3f;
+    stroke-width: 2;
+  }
+
+  .wood-highlight {
+    stroke-width: 5;
+    opacity: 0.55;
+  }
+
+  .face-symbol {
+    fill: #fff4e8;
+    font-family: var(--uno-fonts-ui);
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+
+  .face-flat .face-symbol {
+    fill: #832b21;
+  }
+
+  .face-label {
+    z-index: 2;
+    min-width: 5.5rem;
+    margin-top: -0.15rem;
+    border-top: 1px solid currentColor;
+    padding-top: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .is-casting .face-label {
+    opacity: 0;
+  }
+
+  .cup-left.is-casting .cup {
+    animation: cast-left 1200ms cubic-bezier(0.18, 0.75, 0.25, 1);
+  }
+
+  .cup-right.is-casting .cup {
+    animation: cast-right 1200ms cubic-bezier(0.18, 0.75, 0.25, 1);
+  }
+
+  .is-casting .landing-shadow {
+    animation: shadow-pulse 1200ms ease-out;
+  }
+
+  @keyframes cast-left {
+    0% {
+      transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(-5deg);
+    }
+    20% {
+      transform: translate3d(-0.6rem, -5rem, 0) rotateX(170deg) rotateY(80deg) rotateZ(-40deg) scale(0.92);
+    }
+    48% {
+      transform: translate3d(0.8rem, -7.2rem, 0) rotateX(430deg) rotateY(230deg) rotateZ(35deg) scale(0.82);
+    }
+    76% {
+      transform: translate3d(-0.2rem, 0.55rem, 0) rotateX(690deg) rotateY(370deg) rotateZ(-12deg) scaleY(0.82);
+    }
+    88% {
+      transform: translate3d(0, -0.7rem, 0) rotateX(720deg) rotateY(360deg) rotateZ(4deg) scaleY(1.03);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) rotateX(720deg) rotateY(360deg) rotateZ(0);
+    }
+  }
+
+  @keyframes cast-right {
+    0% {
+      transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(5deg);
+    }
+    18% {
+      transform: translate3d(0.7rem, -4.7rem, 0) rotateX(-150deg) rotateY(-95deg) rotateZ(42deg) scale(0.9);
+    }
+    46% {
+      transform: translate3d(-0.7rem, -6.8rem, 0) rotateX(-410deg) rotateY(-235deg) rotateZ(-32deg) scale(0.84);
+    }
+    75% {
+      transform: translate3d(0.2rem, 0.65rem, 0) rotateX(-680deg) rotateY(-365deg) rotateZ(14deg) scaleY(0.8);
+    }
+    88% {
+      transform: translate3d(0, -0.65rem, 0) rotateX(-720deg) rotateY(-360deg) rotateZ(-4deg) scaleY(1.03);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) rotateX(-720deg) rotateY(-360deg) rotateZ(0);
+    }
+  }
+
+  @keyframes shadow-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    45% {
+      opacity: 0.18;
+      transform: scale(0.45);
+    }
+    76% {
+      opacity: 0.75;
+      transform: scale(1.18);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cup-left.is-casting .cup,
+    .cup-right.is-casting .cup {
+      animation-duration: 1ms;
+    }
+  }
+
+  .result {
+    position: relative;
+    z-index: 1;
+    min-height: 7.5rem;
+    padding-top: 1rem;
+  }
+
+  .result h2 {
+    margin: 0.25rem 0;
+    font-size: 2rem;
+    letter-spacing: 0;
+  }
+
+  .result-copy {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .result[data-result='sheng'] h2 {
+    color: #9d2d22;
+  }
+  .result[data-result='xiao'] h2 {
+    color: #9a6500;
+  }
+  .result[data-result='yin'] h2 {
+    opacity: 0.68;
+  }
+
+  .cast-button {
+    position: relative;
+    z-index: 1;
+    min-width: 8rem;
+    min-height: 2.75rem;
+    border: 2px solid currentColor;
+    color: var(--uno-colors-background);
+    background: var(--uno-colors-primary);
+    padding: 0.65rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cast-button:hover:not(:disabled),
+  .cast-button:focus-visible {
+    color: var(--uno-colors-primary);
+    background: var(--uno-colors-background);
+  }
+
+  .cast-button:disabled {
+    cursor: wait;
+    opacity: 0.6;
+  }
+
+  .session,
+  .meaning {
+    padding-block: 2rem;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .session-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .session-heading h2,
+  .meaning h2 {
+    margin: 0.25rem 0 0;
+    font-size: 1.35rem;
+    letter-spacing: 0;
+  }
+
+  .reset-button {
+    border: 0;
+    color: inherit;
+    background: transparent;
+    padding: 0.3rem 0;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    cursor: pointer;
+  }
+
+  .stats {
+    margin: 1rem 0 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .history {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .history li {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.65rem;
+    border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  }
+
+  .history span,
+  .history small {
+    font-size: 0.75rem;
+  }
+
+  .history strong {
+    font-size: 0.95rem;
+  }
+
+  .empty-history {
+    display: block !important;
+    opacity: 0.55;
+  }
+
+  .meaning dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 1rem 0 0;
+  }
+
+  .meaning dl > div {
+    padding: 1rem;
+    border-top: 1px solid currentColor;
+  }
+
+  .meaning dl > div + div {
+    border-left: 1px solid currentColor;
+  }
+
+  .meaning dt {
+    font-weight: 700;
+  }
+
+  .meaning dd {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.65;
+  }
+
+  .cultural-note {
+    margin: 1.25rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    opacity: 0.68;
+  }
+
+  @media (max-width: 700px) {
+    .game-header h1 {
+      font-size: 2.1rem;
+    }
+
+    .question-area {
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+    }
+
+    .question-heading {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding-top: 0;
+    }
+
+    .question-presets {
+      grid-template-columns: 1fr;
+    }
+
+    .question-presets .custom-question {
+      grid-column: auto;
+    }
+
+    .casting-ground {
+      min-height: 29rem;
+      padding: 3rem 0.75rem 1.5rem;
+    }
+
+    .ground-mark {
+      inset-inline: 0.5rem;
+      font-size: 6.5rem;
+    }
+
+    .cups {
+      grid-template-columns: repeat(2, minmax(0, 9.5rem));
+      gap: 0.25rem;
+    }
+
+    .history li {
+      grid-template-columns: 4.75rem minmax(0, 1fr) auto;
+      gap: 0.5rem;
+    }
+
+    .meaning dl {
+      grid-template-columns: 1fr;
+    }
+
+    .meaning dl > div {
+      padding-inline: 0;
+    }
+
+    .meaning dl > div + div {
+      border-left: 0;
+    }
+  }
+</style>

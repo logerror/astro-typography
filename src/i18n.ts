@@ -7,6 +7,7 @@ export const LANGUAGES = {
     Tags: '标签',
     About: '关于',
     Investing: '投资分析',
+    Games: '游戏',
     Links: '链接',
 
     posted_at: '发布于',
@@ -32,6 +33,7 @@ export const LANGUAGES = {
     Tags: 'Tags',
     About: 'About',
     Investing: 'Investing',
+    Games: 'Games',
     Links: 'Links',
 
     posted_at: 'Posted at',
@@ -57,6 +59,7 @@ export const LANGUAGES = {
     Tags: '標籤',
     About: '關於',
     Investing: '投資分析',
+    Games: '遊戲',
     Links: '鏈接',
 
     posted_at: '發佈於',
@@ -82,6 +85,7 @@ export const LANGUAGES = {
     Tags: 'タグ',
     About: '私について',
     Investing: '投資分析',
+    Games: 'ゲーム',
     Links: 'リンク',
 
     posted_at: '投稿日',
@@ -107,6 +111,7 @@ export const LANGUAGES = {
     Tags: 'Tag',
     About: 'Info',
     Investing: 'Investimenti',
+    Games: 'Giochi',
     Links: 'Link',
 
     posted_at: 'Pubblicato in',
