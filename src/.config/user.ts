@@ -11,6 +11,7 @@ export const userConfig: Partial<UserConfig> = {
     socialLinks: [
       { name: 'github', href: 'https://github.com/logerror/' },
       { name: 'twitter', href: 'https://x.com/RazeKairos' },
+      { name: 'wechat', href: '#wechat-qr' },
       { name: 'rss', href: '/atom.xml' },
     ],
     navLinks: [

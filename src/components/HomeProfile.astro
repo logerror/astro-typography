@@ -1,24 +1,8 @@
----
-const specialties = ['Infra / 研发效能', '智能驾驶', 'AI / 投资研究']
----
-
 <section class="home-profile" aria-labelledby="profile-title">
-  <p class="profile-kicker">CODER · BUILDER · INVESTOR</p>
-  <h1 id="profile-title">在工程系统与产业变化之间，寻找长期价值。</h1>
+  <h1 id="profile-title">构建可靠系统，研究长期价值。</h1>
   <p class="profile-intro">
-    我是 Kairos，一名专注基础设施与工程效率的 Coder。长期实践于 Infra、研发效能与智能驾驶领域，参与 AI Infra
-    基础底座建设，并持续研究技术演进背后的投资机会。
+    专注 AI / Infra、研发效能与智能驾驶，也持续记录投资研究。
   </p>
-
-  <ul class="specialty-list" aria-label="关注领域">
-    {specialties.map((item) => <li>{item}</li>)}
-  </ul>
-
-  <div class="proof-grid">
-    <p><strong>研发效能</strong><span>建设覆盖数十个项目的整体工具链，关键组件将单任务耗时缩短 20 分钟以上</span></p>
-    <p><strong>AI Infra</strong><span>参与基础底座建设，负责多云环境的维护、开发与稳定性保障</span></p>
-    <p><strong>开源与 Skill</strong><span>贡献多个内部与外部开源项目，多项自研 Skill 在内部广泛使用</span></p>
-  </div>
 
   <div class="profile-actions">
     <a href="/about">了解更多关于我</a>
@@ -31,13 +15,6 @@ const specialties = ['Infra / 研发效能', '智能驾驶', 'AI / 投资研究'
     border-block: 2px solid currentColor;
     padding-block: 1.75rem;
     margin-bottom: 3rem;
-  }
-
-  .profile-kicker {
-    margin: 0 0 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
   }
 
   h1 {
@@ -56,45 +33,6 @@ const specialties = ['Infra / 研发效能', '智能驾驶', 'AI / 投资研究'
     line-height: 1.8;
   }
 
-  .specialty-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    list-style: none;
-    font-weight: 700;
-  }
-
-  .specialty-list li::before {
-    content: '#';
-    margin-right: 0.15rem;
-    opacity: 0.55;
-  }
-
-  .proof-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-block: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-  }
-
-  .proof-grid p {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin: 0;
-    padding: 1rem;
-    line-height: 1.55;
-  }
-
-  .proof-grid p + p {
-    border-left: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-  }
-
-  .proof-grid strong {
-    font-size: 0.8rem;
-  }
-
   .profile-actions {
     display: flex;
     flex-wrap: wrap;
@@ -103,14 +41,4 @@ const specialties = ['Infra / 研发效能', '智能驾驶', 'AI / 投资研究'
     font-weight: 700;
   }
 
-  @media (max-width: 700px) {
-    .proof-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .proof-grid p + p {
-      border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
-      border-left: 0;
-    }
-  }
 </style>
